@@ -22,7 +22,7 @@ class ListToExcelTest {
         val before = System.currentTimeMillis()
         val workbook = ListToExcel(films).toExcel()
         val after = System.currentTimeMillis()
-        println("所有操作: ${after - before}ms")
+        println("Time Usage: ${after - before}ms")
         workbook.write(File("F:/Desktop/films.xls"))
     }
 }
