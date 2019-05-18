@@ -10,15 +10,10 @@ class ListToExcelTest {
 
     @Before
     fun generateData() {
-        for (i in 0 until 100) {
-            films.add(
-                Film(
-                    i,
-                    "Film Title $i",
-                    Date.valueOf("2019-5-18"),
-                    "Description of Film Title $i"
-                )
-            )
+        films.run {
+            add(Film(1, "Iron Man", Date.valueOf("2008-4-30"), "None"))
+            add(Film(2, "Iron Man 2", Date.valueOf("2010-5-7"), "None"))
+            add(Film(3, "Iron Man 3", Date.valueOf("2013-5-1"), "None"))
         }
     }
 

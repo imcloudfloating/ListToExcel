@@ -62,8 +62,6 @@ class ListToExcel(private val list: List<Any>) {
      * 设置表格头
      */
     private fun setHeader(headers: List<String>) {
-        println(headers)
-
         val row = sheet.createRow(0)
 
         for (i in headers.indices) {
@@ -76,8 +74,6 @@ class ListToExcel(private val list: List<Any>) {
      * 写入数据
      */
     private fun setData(data: List<List<Any>>) {
-        println(data)
-
         for (i in data.indices) {
             val row = sheet.createRow(i + 1)
 
