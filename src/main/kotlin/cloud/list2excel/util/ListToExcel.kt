@@ -2,8 +2,6 @@ package cloud.list2excel.util
 
 import cloud.list2excel.annotation.Header
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
 
 /**
  * List 导出 Excel 表格
@@ -23,30 +21,30 @@ class ListToExcel(private val list: List<Any>) {
         val data: MutableList<MutableList<Any>> = ArrayList()
 
         // 获取注解并设置表头
-        for (prop in list[0].javaClass.kotlin.memberProperties) {
-            prop.isAccessible = true
+        for (field in list[0].javaClass.declaredFields) {
+            field.isAccessible = true
 
-            prop.annotations.forEach {
-                if (it is Header) {
-                    headers.add(it.name)
-                }
+            val annotation = field.getAnnotation(Header::class.java)
+
+            if (annotation != null) {
+                headers.add(annotation.value)
             }
         }
 
         // 获取数据
         for (obj in list) {
             val rowData: MutableList<Any> = ArrayList()
-            for (prop in obj.javaClass.kotlin.memberProperties) {
-                prop.isAccessible = true
+            for (field in obj.javaClass.declaredFields) {
+                field.isAccessible = true
 
-                prop.annotations.forEach {
-                    if (it is Header) {
-                        val t = prop.get(obj)
-                        if (t == null) {
-                            rowData.add("")
-                        } else {
-                            rowData.add(t)
-                        }
+                val annotation = field.getAnnotation(Header::class.java)
+
+                if (annotation != null) {
+                    val t = field.get(obj)
+                    if (t == null) {
+                        rowData.add("")
+                    } else {
+                        rowData.add(t)
                     }
                 }
             }
