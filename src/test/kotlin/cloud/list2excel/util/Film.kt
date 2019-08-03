@@ -7,12 +7,12 @@ data class Film(
     @Header("ID")
     var id: Int? = null,
 
-    @Header("标题")
+    @Header("Title")
     var title: String? = null,
 
-    @Header("上映时间")
+    @Header("Release Date")
     var release_date: Date? = null,
 
-    @Header("简介")
-    var description: String? = null
+    @Header("Duration")
+    var duration: String? = null
 )

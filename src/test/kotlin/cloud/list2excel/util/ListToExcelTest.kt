@@ -6,17 +6,28 @@ import java.sql.Date
 class ListToExcelTest {
 
     private val films = listOf(
-        Film(1, "Iron Man", Date.valueOf("2008-4-30"), "Iron Man is a 2008 American superhero film."),
-        Film(2, "Iron Man 2", Date.valueOf("2010-5-7"), "Iron Man 2 is a 2010 American superhero film."),
-        Film(3, "Iron Man 3", Date.valueOf("2013-5-1"), "Iron Man 3 is a 2013 American superhero film")
+        Film(1, "Iron Man", Date.valueOf("2008-4-30"), "126 min"),
+        Film(2, "Star Wars: Episode IV - A New Hope", Date.valueOf("1977-5-25"), "121 min"),
+        Film(3, "Zootropolis", Date.valueOf("2016-3-4"), "109 min")
+    )
+
+    private val actors = listOf(
+        Actor(1, "Robert John Downey Jr.", Date.valueOf("1965-4-4")),
+        Actor(2, "Mark Hamill", Date.valueOf("1951-9-25")),
+        Actor(3, "Ginnifer Goodwin", Date.valueOf("1978-5-22"))
+    )
+
+    private val data = mapOf(
+        Pair("films", films),
+        Pair("actors", actors)
     )
 
     @org.junit.Test
     fun toExcel() {
         val before = System.currentTimeMillis()
-        val workbook = ListToExcel(films).toExcel()
+        val workbook = ListToExcel.toExcel(data)
         val after = System.currentTimeMillis()
         println("Time Usage: ${after - before}ms")
-        workbook.write(File("F:/Desktop/films.xls"))
+        workbook.write(File("D:/Desktop/data.xls"))
     }
 }

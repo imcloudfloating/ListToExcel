@@ -1,21 +1,45 @@
 package cloud.list2excel.util
 
 import cloud.list2excel.annotation.Header
+import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import java.sql.Date
 
 /**
  * List 导出 Excel 表格
  * @author Cloud
  */
-class ListToExcel(private val list: List<Any>) {
+object ListToExcel {
 
     private val workbook = HSSFWorkbook()
-    private val sheet = workbook.createSheet()
 
-    fun toExcel(): HSSFWorkbook {
-        if (list.isEmpty()) {
+    /**
+     * 处理单个 Sheet
+     */
+    fun toExcel(data: List<Any>): HSSFWorkbook {
+        toExcel("Sheet0", data)
+        return workbook
+    }
+
+    /**
+     * 处理多个 Sheet
+     */
+    fun toExcel(data: Map<String, List<Any>>): HSSFWorkbook {
+        if (data.isEmpty())
             return workbook
+
+        for (sheet in data) {
+            toExcel(sheet.key, sheet.value)
         }
+
+        return workbook
+    }
+
+    private fun toExcel(sheetName: String, list: List<Any>) {
+        val sheet = workbook.createSheet(sheetName)
+
+        if (list.isEmpty())
+            return
 
         val headers: MutableList<String> = ArrayList()
         val data: MutableList<MutableList<Any>> = ArrayList()
@@ -27,7 +51,7 @@ class ListToExcel(private val list: List<Any>) {
             val annotation = field.getAnnotation(Header::class.java)
 
             if (annotation != null) {
-                headers.add(annotation.value)
+                headers.add(if (annotation.value == "") field.name else annotation.value)
             }
         }
 
@@ -51,15 +75,14 @@ class ListToExcel(private val list: List<Any>) {
             data.add(rowData)
         }
 
-        setHeader(headers)
-        setData(data)
-        return workbook
+        setHeader(sheet, headers)
+        setData(sheet, data)
     }
 
     /**
      * 设置表格头
      */
-    private fun setHeader(headers: List<String>) {
+    private fun setHeader(sheet: HSSFSheet, headers: List<String>) {
         val row = sheet.createRow(0)
 
         for (i in headers.indices) {
@@ -71,7 +94,7 @@ class ListToExcel(private val list: List<Any>) {
     /**
      * 写入数据
      */
-    private fun setData(data: List<List<Any>>) {
+    private fun setData(sheet: HSSFSheet, data: List<List<Any>>) {
         for (i in data.indices) {
             val row = sheet.createRow(i + 1)
 
