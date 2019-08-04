@@ -1,41 +1,43 @@
 package cloud.list2excel.util
 
 import cloud.list2excel.annotation.Header
+import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import java.sql.Date
+import org.apache.poi.ss.usermodel.BorderStyle
 
 /**
- * List 导出 Excel 表格
+ * List/Map 导出 Excel 表格
  * @author Cloud
  */
 object ListToExcel {
 
-    private val workbook = HSSFWorkbook()
+    private var workbook: HSSFWorkbook = HSSFWorkbook()
+    private val cellStyles: MutableList<HSSFCellStyle> = ArrayList()
 
     /**
      * 处理单个 Sheet
      */
-    fun toExcel(data: List<Any>): HSSFWorkbook {
-        toExcel("Sheet0", data)
+    fun from(data: List<Any>): HSSFWorkbook {
+        toWorkbook("Sheet0", data)
         return workbook
     }
 
     /**
      * 处理多个 Sheet
      */
-    fun toExcel(data: Map<String, List<Any>>): HSSFWorkbook {
+    fun from(data: Map<String, List<Any>>): HSSFWorkbook {
         if (data.isEmpty())
             return workbook
 
         for (sheet in data) {
-            toExcel(sheet.key, sheet.value)
+            toWorkbook(sheet.key, sheet.value)
         }
 
         return workbook
     }
 
-    private fun toExcel(sheetName: String, list: List<Any>) {
+    private fun toWorkbook(sheetName: String, list: List<Any>) {
         val sheet = workbook.createSheet(sheetName)
 
         if (list.isEmpty())
@@ -51,7 +53,29 @@ object ListToExcel {
             val annotation = field.getAnnotation(Header::class.java)
 
             if (annotation != null) {
-                headers.add(if (annotation.value == "") field.name else annotation.value)
+                headers.add(if (annotation.title == "") field.name else annotation.title)
+
+                val cellStyle = workbook.createCellStyle().also { style ->
+                    style.setFont(workbook.createFont().also {
+                        it.fontHeightInPoints = annotation.fontSize
+                        it.color = annotation.fontColor.index
+                    })
+
+                }
+
+                cellStyle.run {
+                    leftBorderColor = annotation.borderColor.index
+                    topBorderColor = annotation.borderColor.index
+                    rightBorderColor = annotation.borderColor.index
+                    bottomBorderColor = annotation.borderColor.index
+
+                    borderLeft = BorderStyle.THIN
+                    borderTop = BorderStyle.THIN
+                    borderRight = BorderStyle.THIN
+                    borderBottom = BorderStyle.THIN
+                }
+
+                cellStyles.add(cellStyle)
             }
         }
 
@@ -88,6 +112,7 @@ object ListToExcel {
         for (i in headers.indices) {
             val cell = row.createCell(i)
             cell.setCellValue(headers[i])
+            cell.setCellStyle(cellStyles[i])
         }
     }
 
@@ -101,6 +126,7 @@ object ListToExcel {
             for (j in data[i].indices) {
                 val cell = row.createCell(j)
                 cell.setCellValue(data[i][j].toString())
+                cell.setCellStyle(cellStyles[j])
                 sheet.autoSizeColumn(j)
             }
         }

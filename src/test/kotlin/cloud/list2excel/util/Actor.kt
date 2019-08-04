@@ -4,12 +4,12 @@ import cloud.list2excel.annotation.Header
 import java.sql.Date
 
 data class Actor(
-    @Header("ID")
+    @Header(title = "ID")
     var id: Int? = null,
 
-    @Header("Full Name")
+    @Header(title = "Full Name")
     var name: String? = null,
 
-    @Header("Birth")
+    @Header(title = "Birth")
     var birth: Date?=null
 )

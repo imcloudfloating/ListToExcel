@@ -25,7 +25,7 @@ class ListToExcelTest {
     @org.junit.Test
     fun toExcel() {
         val before = System.currentTimeMillis()
-        val workbook = ListToExcel.toExcel(data)
+        val workbook = ListToExcel.from(data)
         val after = System.currentTimeMillis()
         println("Time Usage: ${after - before}ms")
         workbook.write(File("D:/Desktop/data.xls"))

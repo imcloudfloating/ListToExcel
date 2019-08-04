@@ -8,16 +8,16 @@
 
 ```kotlin
 data class Film(
-    @Header("ID")
+    @Header(title = "ID")
     private var id: Int? = null,
 
-    @Header("Title")
+    @Header(title = "Title")
     var title: String? = null,
 
-    @Header("Release Date")
+    @Header(title = "Release Date")
     var release_date: Date? = null,
 
-    @Header("Duration")
+    @Header(title = "Duration")
     var duration: String? = null
 )
 ```
@@ -32,7 +32,7 @@ val films = listOf(
     Film(3, "Zootropolis", Date.valueOf("2016-3-4"), "109 min")
 )
     
-val workbook = ListToExcel.toExcel(films)
+val workbook = ListToExcel.from(films)
 workbook.write(File("/home/films.xls"))
 ```
 
@@ -56,7 +56,7 @@ val data = mapOf(
     Pair("actors", actors)
 )
 
-val workbook = ListToExcel.toExcel(data)
+val workbook = ListToExcel.from(data)
 workbook.write(File("/home/data.xls"))
 ```
 
