@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Header{
+public @interface Column {
     String title() default "";
     short fontSize() default 14;
     HSSFColor.HSSFColorPredefined fontColor() default HSSFColor.HSSFColorPredefined.BLACK;

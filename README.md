@@ -2,13 +2,13 @@
 
 支持导出多个工作表。
 
-## 使用 @Header 注解
+## 使用 @Column 注解
 
-只使用 `@Header` 注解不提供值，则使用字段名称作为表格头。
+只使用 `@Column` 注解不提供值，则使用字段名称作为表格头。
 
 ```kotlin
 data class Film(
-    @Header(title = "ID")
+    @Header(title = "ID", fontColor = HSSFColor.HSSFColorPredefined.RED)
     private var id: Int? = null,
 
     @Header(title = "Title")

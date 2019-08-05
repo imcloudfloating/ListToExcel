@@ -1,6 +1,6 @@
 package cloud.list2excel.util
 
-import cloud.list2excel.annotation.Header
+import cloud.list2excel.annotation.Column
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -50,7 +50,7 @@ object ListToExcel {
         for (field in list[0].javaClass.declaredFields) {
             field.isAccessible = true
 
-            val annotation = field.getAnnotation(Header::class.java)
+            val annotation = field.getAnnotation(Column::class.java)
 
             if (annotation != null) {
                 headers.add(if (annotation.title == "") field.name else annotation.title)
@@ -85,7 +85,7 @@ object ListToExcel {
             for (field in obj.javaClass.declaredFields) {
                 field.isAccessible = true
 
-                val annotation = field.getAnnotation(Header::class.java)
+                val annotation = field.getAnnotation(Column::class.java)
 
                 if (annotation != null) {
                     val t = field.get(obj)

@@ -1,15 +1,15 @@
 package cloud.list2excel.util
 
-import cloud.list2excel.annotation.Header
+import cloud.list2excel.annotation.Column
 import java.sql.Date
 
 data class Actor(
-    @Header(title = "ID")
+    @Column(title = "ID")
     var id: Int? = null,
 
-    @Header(title = "Full Name")
+    @Column(title = "Full Name")
     var name: String? = null,
 
-    @Header(title = "Birth")
+    @Column(title = "Birth")
     var birth: Date?=null
 )

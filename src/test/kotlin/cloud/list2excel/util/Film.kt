@@ -1,19 +1,19 @@
 package cloud.list2excel.util
 
-import cloud.list2excel.annotation.Header
+import cloud.list2excel.annotation.Column
 import org.apache.poi.hssf.util.HSSFColor
 import java.sql.Date
 
 data class Film(
-    @Header(title = "ID", fontColor = HSSFColor.HSSFColorPredefined.RED)
+    @Column(title = "ID", fontColor = HSSFColor.HSSFColorPredefined.RED)
     var id: Int? = null,
 
-    @Header(title = "Title")
+    @Column(title = "Title")
     var title: String? = null,
 
-    @Header(title = "Release Date")
+    @Column(title = "Release Date")
     var release_date: Date? = null,
 
-    @Header(title = "Duration")
+    @Column(title = "Duration")
     var duration: String? = null
 )
